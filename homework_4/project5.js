@@ -58,6 +58,7 @@ class MeshDrawer
 			varying vec2 texCoord;
 			varying vec3 vnormal;
 			varying vec3 vpos;
+			varying vec3 vlightpos;
 
 			void main() {
 				vec3 p = pos;
@@ -67,6 +68,7 @@ class MeshDrawer
 				gl_Position = mvp * vec4(p, 1.0);
 				vnormal = normalize(mn * normal);
     			vpos = (mv * vec4(vpos, 1.0)).xyz;
+				vlightpos = normalize(mn * lightpos);
 				texCoord = txc;
 			}
 			`;
@@ -79,11 +81,13 @@ class MeshDrawer
 		varying vec2 texCoord;
 		varying vec3 vnormal;
 		varying vec3 vpos;
+		varying vec3 vlightpos;
+		
 
 		
 		void main() {
 			vec3 N = normalize(vnormal);
-			vec3 L = normalize(lightpos);
+			vec3 L = normalize(vlightpos);
 			vec3 V = normalize(-vpos);
 			vec3 H = normalize(L + V);
 
@@ -253,6 +257,7 @@ class MeshDrawer
 	{
 		// [TO-DO] set the uniform parameter(s) of the fragment shader to specify the light direction.
 		const lightposloc = gl.getUniformLocation(this.prog, "lightpos");
+		gl.useProgram(this.prog);
 		const dir = [x,y,z];
 		gl.uniform3fv(lightposloc, dir);
 	}
