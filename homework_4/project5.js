@@ -91,8 +91,8 @@ class MeshDrawer
 			vec3 V = normalize(-vpos);
 			vec3 H = normalize(L + V);
 
-			float diff = max(dot(N, L), 0.0);
-			float spec = pow(max(dot(N, H), 0.0), shininess);
+			float diffuse = max(dot(N, L), 0.0);
+			float specular = pow(max(dot(N, H), 0.0), shininess);
 
 			vec3 Kd = vec3(1.0);
 
@@ -101,7 +101,7 @@ class MeshDrawer
 			} 
 
 			vec3 Ks = vec3(1.0);
-			vec3 finalColor = (Kd * diff + Ks * spec);
+			vec3 finalColor = (Kd * diffuse + Ks * specular);
 			gl_FragColor = vec4(finalColor, 1.0);
 		}
 		`;
