@@ -186,19 +186,11 @@ class MeshDrawer
 		gl.bindBuffer(gl.ARRAY_BUFFER, this.vertex_position_buffer);
 		gl.vertexAttribPointer(p, 3, gl.FLOAT, false, 0, 0);
 		gl.enableVertexAttribArray(p);
-		if (p === -1) {
-			console.error("Attribute 'pos' not found in shader.");
-			return;
-		}
 
 		var n = gl.getAttribLocation(this.prog,'normal');
 		gl.bindBuffer(gl.ARRAY_BUFFER, this.normals_buffer);
 		gl.vertexAttribPointer(n, 3, gl.FLOAT, false, 0, 0);
 		gl.enableVertexAttribArray(n);
-		if (n === -1) {
-			console.error("Attribute 'normal' not found in shader.");
-			return;
-		}
 
 		
 		
@@ -206,10 +198,6 @@ class MeshDrawer
 		gl.bindBuffer(gl.ARRAY_BUFFER, this.text_coords_buffer);
 		gl.vertexAttribPointer(t, 2, gl.FLOAT, false, 0, 0);
 		gl.enableVertexAttribArray(t);
-		if (t === -1) {
-			console.error("Attribute 't' not found in shader.");
-			return;
-		}
 
 		gl.drawArrays( gl.TRIANGLES, 0, this.numTriangles );
 	}
