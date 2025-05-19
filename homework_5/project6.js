@@ -43,13 +43,15 @@ vec3 Shade( Material mtl, vec3 position, vec3 normal, vec3 view )
 		// TO-DO: Check for shadows
 		HitInfo hit;
 		Ray shadowray;
-		shadowray.pos = position + 1e-3 * normal;
 		shadowray.dir = normalize(lights[i].position - position);
+		shadowray.pos = position +4.0 * normal;
 		float distancelight = length(lights[i].position - position);
 		bool shadowed = false;
 		if(IntersectRay(hit, shadowray))
 		{
-			if(hit.t < distancelight){shadowed = true;}
+			if (hit.t >= 4.0 && hit.t < distancelight)
+        		{shadowed = true;}
+
 		}
 		if(!shadowed)
 		{
@@ -113,7 +115,6 @@ vec4 RayTracer( Ray ray )
 	if ( IntersectRay( hit, ray ) ) {
 		vec3 view = normalize( -ray.dir );
 		vec3 clr = Shade( hit.mtl, hit.position, hit.normal, view );
-		
 		// Compute reflections
 		vec3 k_s = hit.mtl.k_s;
 		for ( int bounce=0; bounce<MAX_BOUNCES; ++bounce ) {
@@ -128,11 +129,11 @@ vec4 RayTracer( Ray ray )
 			r.dir = reflect(-view,hit.normal);
 			
 			if ( IntersectRay( h, r ) ) {
-				// TO-DO: Hit found, so shade the hit point
-				// TO-DO: Update the loop variables for tracing the next reflection ray
+				// TO-DO: Hit found, so shade the hit point			
 				view = normalize(-r.dir);
-				ray = r;
 				clr += k_s * Shade( h.mtl, h.position, h.normal, view );
+				// TO-DO: Update the loop variables for tracing the next reflection ray			
+				ray = r;				
 				hit = h;
 				k_s *= h.mtl.k_s;
 
